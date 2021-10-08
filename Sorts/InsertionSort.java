@@ -14,7 +14,7 @@ class InsertionSort implements SortAlgorithm {
    */
   @Override
   public <T extends Comparable<T>> T[] sort(T[] array) {
-    for (int i = 1; i < array.length; i++) {
+    for (int i = 0; i < array.length; i++) { // i = 0 多一次循环 但是便于理解
       T insertValue = array[i];
       int j;
       for (j = i - 1; j >= 0 && less(insertValue, array[j]); j--) {
@@ -30,12 +30,12 @@ class InsertionSort implements SortAlgorithm {
   /** Driver Code */
   public static void main(String[] args) {
     Integer[] integers = {4, 23, 6, 78, 1, 54, 231, 9, 12};
-    InsertionSort sort = new InsertionSort();
-    sort.sort(integers);
+    InsertionSort insertionSort = new InsertionSort();
+    insertionSort.sort(integers);
     print(integers); /* [1, 4, 6, 9, 12, 23, 54, 78, 231] */
 
     String[] strings = {"c", "a", "e", "b", "d"};
-    sort.sort(strings);
+    insertionSort.sort(strings);
     print(strings); /* [a, b, c, d, e] */
   }
 }

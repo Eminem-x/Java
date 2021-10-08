@@ -1,5 +1,7 @@
 package Sorts;
 
+import static Sorts.SortUtils.*;
+
 public class SelectionSort implements SortAlgorithm {
 
   /**
@@ -15,14 +17,12 @@ public class SelectionSort implements SortAlgorithm {
     for (int i = 0; i < n - 1; i++) {
       int minIndex = i;
       for (int j = i + 1; j < n; j++) {
-        if (arr[minIndex].compareTo(arr[j]) > 0) {
+        if (less(arr[j],arr[minIndex])) {
           minIndex = j;
         }
       }
       if (minIndex != i) {
-        T temp = arr[i];
-        arr[i] = arr[minIndex];
-        arr[minIndex] = temp;
+        swap(arr,minIndex,i);
       }
     }
     return arr;
@@ -43,5 +43,7 @@ public class SelectionSort implements SortAlgorithm {
     for (int i = 0; i < sortedStrings.length - 1; ++i) {
       assert strings[i].compareTo(strings[i + 1]) <= 0;
     }
+
+    print(arr);
   }
 }
