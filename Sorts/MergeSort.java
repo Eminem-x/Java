@@ -66,7 +66,6 @@ class MergeSort implements SortAlgorithm {
       temp[k++] = arr[j++];
     }
 
-    /* 没有返回类型 数组的引用 */
     System.arraycopy(temp, 0, arr, left, length);
   }
 

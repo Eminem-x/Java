@@ -1,84 +1,96 @@
 package Sorts;
 
+import static Sorts.SortUtils.print;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 /**
- * Generic counting sort algorithm.
- *
- * @author Yuanhao
+ * @author Youssef Ali (https://github.com/youssefAli11997)
+ * @author Podshivalov Nikita (https://github.com/nikitap492)
  */
-public class CountingSort {
-   /**
-   * @param arr the array
-   * @return the min value in array
-   */
-    private static int getMin(int[] arr) {
-        int min = arr[0];
-        for (int value : arr) {
-            if (value < min) {
-                min = value;
-            }
-        }
-        return min;
-    }
+class CountingSort implements SortAlgorithm {
+
+  @Override
+  public <T extends Comparable<T>> T[] sort(T[] unsorted) {
+    return sort(Arrays.asList(unsorted)).toArray(unsorted);
+  }
 
   /**
-   * get the length of count array
-   * @param arr the array
-   * @return the length
+   * This method implements the Generic Counting Sort
+   *
+   * @param list The list to be sorted
+   *     <p>Sorts the list in increasing order The method uses list elements as keys in the
+   *     frequency map
    */
-    private static int getLen(int[] arr) {
-        int max = arr[0];
-        int min = getMin(arr);
-        for (int value : arr) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max - min + 1;
+  @Override
+  public <T extends Comparable<T>> List<T> sort(List<T> list) {
+
+    Map<T, Integer> frequency = new TreeMap<>();
+    // The final output array
+    List<T> sortedArray = new ArrayList<>(list.size());
+
+    // Counting the frequency of @param array elements
+    list.forEach(v -> frequency.put(v, frequency.getOrDefault(v, 0) + 1));
+
+    // Filling the sortedArray
+    for (Map.Entry<T, Integer> element : frequency.entrySet()) {
+      for (int j = 0; j < element.getValue(); j++) {
+        sortedArray.add(element.getKey());
+      }
     }
 
-    /**
-     * Generic merge sort algorithm.
-     *
-     * @param unsorted the array which will be sorted
-     * @return the sorted array
-     */
-    public static int[] sort(int[] unsorted) {
-        int[] sorted = new int[unsorted.length];
-        int min = getMin(unsorted);
-        int[] index = new int[getLen(unsorted)];
-        for (int value : unsorted) {
-            index[value - min]++;
-        }
-        for (int i = 0; i < index.length - 1; i++) {
-            index[i + 1] += index[i];
-        }
-        for (int value : unsorted) {
-            sorted[--index[value - min]] = value;
-        }
-        return sorted;
-    }
+    return sortedArray;
+  }
 
-    /**
-     * prints an array
-     *
-     * @param arr the printed array
-     */
-    static void print(int[] arr) {
-        for (int value : arr) {
-            System.out.print(value + " ");
-        }
-    }
+  /**
+   * Stream Counting Sort The same as method {@link CountingSort#sort(List)} } but this method uses
+   * stream API
+   *
+   * @param list The list to be sorted
+   */
+  private static <T extends Comparable<T>> List<T> streamSort(List<T> list) {
+    return list.stream()
+        .collect(toMap(k -> k, v -> 1, (v1, v2) -> v1 + v2, TreeMap::new))
+        .entrySet()
+        .stream()
+        .flatMap(entry -> IntStream.rangeClosed(1, entry.getValue()).mapToObj(t -> entry.getKey()))
+        .collect(toList());
+  }
 
-    /** Driver code **/
-    public static void main(String[] args) {
-        // Integer Input
-        int[] unsortedInts = {4, 23, 6, 78, 1, 54, 23, 1, 9, 231, 9, 12};
-        int[] sorted = sort(unsortedInts);
-        for (int i = 0; i < sorted.length - 1; i++) {
-            assert sorted[i] <= sorted[i + 1];
-        }
-        // Output => 1 1 4 6 9 9 12 23 23 54 78 231
-        System.out.println("After Sorting:");
-        print(sorted);
-    }
+  // Driver Program
+  public static void main(String[] args) {
+    // Integer Input
+    List<Integer> unsortedInts =
+        Stream.of(4, 23, 6, 78, 1, 54, 23, 1, 9, 231, 9, 12).collect(toList());
+    CountingSort countingSort = new CountingSort();
+
+    System.out.println("Before Sorting:");
+    print(unsortedInts);
+
+    // Output => 1 1 4 6 9 9 12 23 23 54 78 231
+    System.out.println("After Sorting:");
+    print(countingSort.sort(unsortedInts));
+    System.out.println("After Sorting By Streams:");
+    print(streamSort(unsortedInts));
+
+    System.out.println("\n------------------------------\n");
+
+    // String Input
+    List<String> unsortedStrings =
+        Stream.of("c", "a", "e", "b", "d", "a", "f", "g", "c").collect(toList());
+
+    System.out.println("Before Sorting:");
+    print(unsortedStrings);
+
+    // Output => a a b c c d e f g
+    System.out.println("After Sorting:");
+    print(countingSort.sort(unsortedStrings));
+
+    System.out.println("After Sorting By Streams:");
+    print(streamSort(unsortedStrings));
+  }
 }

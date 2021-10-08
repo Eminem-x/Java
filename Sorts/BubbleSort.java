@@ -26,7 +26,7 @@ class BubbleSort implements SortAlgorithm {
           swapped = true;
         }
       }
-      if (!swapped) { //在一定程度上 减少了循环次数
+      if (!swapped) {
         break;
       }
     }
