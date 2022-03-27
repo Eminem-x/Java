@@ -44,8 +44,10 @@ class QuickSort implements SortAlgorithm {
    * @return the partition index of the array
    */
   private static <T extends Comparable<T>> int randomPartition(T[] array, int left, int right) {
+    // 为什么需要这一步 不是多余吗？
     int randomIndex = left + (int) (Math.random() * (right - left + 1));
     swap(array, randomIndex, right);
+
     return partition(array, left, right);
   }
 
