@@ -20,3 +20,6 @@ We're on [Gitter](https://gitter.im/TheAlgorithms)! Come join us.
 
 ## Algorithms
 Our [directory](DIRECTORY.md) has the full list of applications.
+
+## For Me
+I want to record algorithms and data-structures with formal code. 
